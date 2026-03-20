@@ -3,7 +3,8 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 
-Assets/Scenes/LucaScene
+Assets/Scenes/Luca.unity
+Assets/Scenes/Luca.unity.meta
 
 .utmp/
 /[Ll]ibrary/
