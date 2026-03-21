@@ -59,7 +59,6 @@ public class Player : MonoBehaviour
         else if(moveVertical > 0){moveVertical = 1;}
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         body.AddForce(new Vector2 (moveHorizontal*speed, moveVertical*speed));
-        Debug.Log(body.linearVelocity.magnitude);
         if(body.linearVelocity.magnitude > maxVelocity){
             body.linearVelocity = (body.linearVelocity / body.linearVelocity.magnitude) * maxVelocity;
         }
