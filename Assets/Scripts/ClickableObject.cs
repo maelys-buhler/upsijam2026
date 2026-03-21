@@ -9,11 +9,33 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDown
     [SerializeField] private bool isEnabledWhileDragging = true;
     [SerializeField] private LayerMask groundLayer;
     private CameraFollow mainCamera;
+    [SerializeField] public bool isDragEnabled = true;
+    [SerializeField] public bool isClickEnabled = true;
+    private Vector3 defaultPosition;
 
-    public void OnPointerClick(PointerEventData eventData) { }
+    public void ResetLocation()
+    {
+        transform.localPosition = defaultPosition;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Disable clicking when dragging is already enabled (drag gets priority over click)
+        if (!isClickEnabled || isDragEnabled)
+            return;
+
+        if(gameObject.name == "BtnReset")
+        {
+            GameObject.Find("Player").GetComponent<Player>().ResetAtCurrentLevelSpawnPoint();
+        }
+
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+
+        if(!isDragEnabled) return;
+
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
         mouseWorldPos.z = 0;
 
@@ -25,6 +47,9 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDown
 
     public void OnDrag(PointerEventData eventData)
     {
+
+        if (!isDragEnabled) return;
+
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
         mouseWorldPos.z = 0;
         rbSelf.MovePosition(mouseWorldPos + offset);
@@ -60,6 +85,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDown
     void Awake()
     {
         rbSelf = GetComponent<Rigidbody2D>();
+        defaultPosition = transform.localPosition;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
