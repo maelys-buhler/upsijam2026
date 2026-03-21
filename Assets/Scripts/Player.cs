@@ -4,7 +4,9 @@ public class Player : MonoBehaviour
 {
 
     private int currentLevel = 0;
-    private Vector3 defaultBtnResetLoc;
+    private bool leftKey = false;
+    private bool rightKey = false;
+    private bool upKey = false;
 
     public Vector3 GetCurrentLevelSpawnPoint()
     {
@@ -28,7 +30,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        defaultBtnResetLoc = GameObject.Find("BtnReset").transform.localPosition;
+
     }
 
     // Update is called once per frame
@@ -49,13 +51,6 @@ public class Player : MonoBehaviour
         }
         if(collision.gameObject.tag == "EndLevel")
         {
-            GameObject.Find("BtnReset").GetComponent<ClickableObject>().isDragEnabled = true;
-        }
-        if(collision.gameObject.name == "BtnReset")
-        {
-            GameObject btnReset = GameObject.Find("BtnReset");
-            btnReset.transform.localPosition = defaultBtnResetLoc;
-            btnReset.GetComponent<ClickableObject>().isDragEnabled = false;
             NextLevel();
             ResetAtCurrentLevelSpawnPoint();
         }
@@ -63,6 +58,13 @@ public class Player : MonoBehaviour
         {
             collision.gameObject.SetActive(false);
             GameObject.Find(collision.gameObject.name.Substring(4)).GetComponent<SpriteRenderer>().sprite = collision.gameObject.GetComponent<SpriteRenderer>().sprite;
+            string name = collision.gameObject.name;
+            if (name.Contains("Left"))
+                leftKey = true;
+            if(name.Contains("Right"))
+                rightKey = true;
+            if(name.Contains("Up"))
+                upKey = true;
         }
     }
 
