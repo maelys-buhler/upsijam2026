@@ -17,15 +17,10 @@ public class onclickSound : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick( PointerEventData eventData ) {
         jumpPerson(stickPerson);
         GetComponent<AudioSource>().PlayOneShot(horn);
-        Debug.Log("clicked sound!");
     }
 
     void jumpPerson(GameObject stickPerson){
         RaycastHit2D res = Physics2D.Raycast (stickPerson.transform.position, Vector2.down, 1f, ground);
-        //if(res.collider == stickPerson.GetComponent<Collider>()){
-        //    Debug.Log("its the same");
-        //    res = Physics2D.Raycast(res.transform.position, Vector2.down, 0.02f);
-        //}
         if (res) //is grounded?
         {
             stickPerson.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpStrength);
@@ -41,7 +36,6 @@ public class onclickSound : MonoBehaviour, IPointerClickHandler
     void Update(){
         RaycastHit2D res = Physics2D.Raycast (stickPerson.transform.position, Vector2.down, 1f, ground);
         if (res && !isStickPersonGrounded) {
-            Debug.Log("changed back");
             stickPerson.gameObject.GetComponent<SpriteRenderer>().sprite = defaultStickPerson;
             isStickPersonGrounded = true;
         } 
