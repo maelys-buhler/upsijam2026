@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,6 +11,11 @@ public class Player : MonoBehaviour
     private bool upKey = false;
     public float speed = 10000;
     public float maxVelocity = 10;
+    private LayerMask ground;
+    private Rigidbody2D body;
+
+    private bool lockedMovement = false;
+
 
     public Vector3 GetCurrentLevelSpawnPoint()
     {
@@ -23,6 +30,8 @@ public class Player : MonoBehaviour
         {
             item.ResetLocation();
         }
+        lockedMovement = true;
+        StartCoroutine(Sleep(0.5f, ()=>lockedMovement = false));
     }
 
     public void NextLevel()
@@ -30,23 +39,46 @@ public class Player : MonoBehaviour
         currentLevel++;
     }
 
+
+    IEnumerator Sleep(float seconds, Action then)
+    {
+        yield return new WaitForSeconds(seconds);
+        then.Invoke();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        NextLevel();
+        //TODO REMOVE
+        //NextLevel();
+        //NextLevel();
+        leftKey = true;
+        rightKey = true;
+        upKey = true;
+        //---------
         ResetAtCurrentLevelSpawnPoint();
+    }
+
+    private void Awake()
+    {
+        ground = LayerMask.GetMask("Ground");
+        body = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetButton("Jump"))
+        {
+            Debug.Log("uwu");
+        }
     }
 
     void FixedUpdate()
     {
-        LayerMask ground = LayerMask.GetMask("Ground");
-        float moveHorizontal = Input.GetAxis("Horizontal");
+        if (lockedMovement)
+            return;
+        /*float moveHorizontal = Input.GetAxis("Horizontal");
         if(moveHorizontal > 0 && !rightKey){moveHorizontal = 0;}
         else if(moveHorizontal < 0 && !leftKey){moveHorizontal = 0;}
         else if(moveHorizontal < 0){moveHorizontal = -1;}
@@ -59,11 +91,17 @@ public class Player : MonoBehaviour
             moveVertical = 0;
         }
         else if(moveVertical > 0){moveVertical = 1;}
-        Rigidbody2D body = GetComponent<Rigidbody2D>();
         body.AddForce(new Vector2 (moveHorizontal*speed, moveVertical*speed));
         if(body.linearVelocity.magnitude > maxVelocity){
             body.linearVelocity = (body.linearVelocity / body.linearVelocity.magnitude) * maxVelocity;
-        }
+        }*/
+        float direction = Input.GetAxisRaw("Horizontal");
+        float targetSpeed = direction * speed;
+        float speedDif = targetSpeed - body.linearVelocity.x;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? 8f : 9f;
+        float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, 1f) * Mathf.Sign(speedDif);
+        // Vector right to prevent affecting up/down velocity (which is alreary handled by jump)
+        body.AddForce(movement * Vector2.right);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -72,7 +110,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if(collision.gameObject.name == "Ouchies" || collision.gameObject.name == "Deadline")
+        if(collision.gameObject.name == "Ouchies" || collision.gameObject.tag == "Deadline")
         {
             ResetAtCurrentLevelSpawnPoint();
         }
