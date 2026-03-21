@@ -885,6 +885,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: tileset_128_33
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e50425daafd4610468f0b5e5ad5ed65d
+      internalID: -1081966120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -928,6 +950,7 @@ TextureImporter:
       tileset_128_30: -368084871
       tileset_128_31: -1878067150
       tileset_128_32: 832402491
+      tileset_128_33: -1081966120
       tileset_128_4: 1879714955
       tileset_128_5: 1599450459
       tileset_128_6: 762374695

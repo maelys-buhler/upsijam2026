@@ -10,6 +10,7 @@ public class TrapRain : MonoBehaviour
     public float depth = 10;
     int layer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private bool isActive = false;
     void Start()
     {
         layer = LayerMask.NameToLayer("Rain");
@@ -26,6 +27,10 @@ public class TrapRain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!isActive)
+        {
+            return;
+        }
         chrono += Time.deltaTime;
         if(chrono >= intervalBetweenObjectAppearance){
             chrono = 0f;

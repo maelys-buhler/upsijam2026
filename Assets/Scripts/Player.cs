@@ -9,10 +9,20 @@ public class Player : MonoBehaviour
     private bool leftKey = false;
     private bool rightKey = false;
     private bool upKey = false;
-    public float speed = 10000;
-    public float maxVelocity = 10;
     private LayerMask ground;
     private Rigidbody2D body;
+
+    public float speed = 5f;
+    private bool isGrounded = true;
+    public float jumpForce = 8f;
+    private bool wasGrounded = true;
+    private bool jumpKeyed = false;
+    private bool jumpClicked = false;
+
+    [SerializeField] private AudioClip horn;
+
+    [SerializeField] private Sprite scaredStickPerson;
+    private Sprite defaultStickPerson;
 
     private bool lockedMovement = false;
 
@@ -50,11 +60,11 @@ public class Player : MonoBehaviour
     void Start()
     {
         //TODO REMOVE
-        //NextLevel();
-        //NextLevel();
+        NextLevel();
+        NextLevel();
         leftKey = true;
         rightKey = true;
-        upKey = true;
+        //upKey = true;
         //---------
         ResetAtCurrentLevelSpawnPoint();
     }
@@ -63,38 +73,62 @@ public class Player : MonoBehaviour
     {
         ground = LayerMask.GetMask("Ground");
         body = GetComponent<Rigidbody2D>();
+        defaultStickPerson = GetComponent<SpriteRenderer>().sprite;
+    }
+
+    public void Jump(bool jumpKeyed)
+    {
+        // Cannot double jump by pressing 2 space
+        if(this.jumpKeyed && jumpKeyed)
+        {
+            return;
+        }
+        // Cannot double jump by scare jumping 2 times
+        if (this.jumpClicked && !jumpKeyed)
+        {
+            return;
+        }
+        // Cannot key jump after scare jump
+        if(this.jumpClicked && jumpKeyed)
+        {
+            return;
+        }
+        body.linearVelocity = new Vector2(body.linearVelocityX, jumpForce);
+        if (jumpKeyed)
+        {
+            this.jumpKeyed = true;
+        } 
+        else
+        {
+            this.jumpClicked = true;
+            transform.GetComponent<SpriteRenderer>().sprite = scaredStickPerson;
+            GetComponent<AudioSource>().PlayOneShot(horn);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Jump"))
+
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.8f, ground);
+
+        if (!wasGrounded && isGrounded)
         {
-            Debug.Log("uwu");
+            transform.GetComponent<SpriteRenderer>().sprite = defaultStickPerson;
+            this.jumpClicked = false;
+            this.jumpKeyed = false;
         }
+
+        if (Input.GetButtonDown("Jump") && upKey)
+            Jump(true);
+
+        wasGrounded = isGrounded;
     }
 
     void FixedUpdate()
     {
         if (lockedMovement)
             return;
-        /*float moveHorizontal = Input.GetAxis("Horizontal");
-        if(moveHorizontal > 0 && !rightKey){moveHorizontal = 0;}
-        else if(moveHorizontal < 0 && !leftKey){moveHorizontal = 0;}
-        else if(moveHorizontal < 0){moveHorizontal = -1;}
-        else if(moveHorizontal > 0){moveHorizontal = 1;}
-        float moveVertical = Input.GetAxis("Vertical");
-        if(moveVertical < 0){moveVertical = 0;}
-        else if(moveVertical > 0 && !upKey){moveVertical = 0;}
-        else if(!(Physics2D.Raycast (transform.position, Vector2.down, 1f, ground)))
-        {
-            moveVertical = 0;
-        }
-        else if(moveVertical > 0){moveVertical = 1;}
-        body.AddForce(new Vector2 (moveHorizontal*speed, moveVertical*speed));
-        if(body.linearVelocity.magnitude > maxVelocity){
-            body.linearVelocity = (body.linearVelocity / body.linearVelocity.magnitude) * maxVelocity;
-        }*/
         float direction = Input.GetAxisRaw("Horizontal");
         float targetSpeed = direction * speed;
         float speedDif = targetSpeed - body.linearVelocity.x;
