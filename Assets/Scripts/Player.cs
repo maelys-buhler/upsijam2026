@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public void ResetAtCurrentLevelSpawnPoint()
     {
         transform.position = GetCurrentLevelSpawnPoint();
+        transform.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         foreach (var item in FindObjectsByType<ClickableObject>(FindObjectsSortMode.None))
         {
             item.ResetLocation();
@@ -32,7 +33,8 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        NextLevel();
+        ResetAtCurrentLevelSpawnPoint();
     }
 
     // Update is called once per frame
@@ -59,7 +61,6 @@ public class Player : MonoBehaviour
         else if(moveVertical > 0){moveVertical = 1;}
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         body.AddForce(new Vector2 (moveHorizontal*speed, moveVertical*speed));
-        Debug.Log(body.linearVelocity.magnitude);
         if(body.linearVelocity.magnitude > maxVelocity){
             body.linearVelocity = (body.linearVelocity / body.linearVelocity.magnitude) * maxVelocity;
         }
@@ -71,7 +72,7 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        if(collision.gameObject.name == "Deadline")
+        if(collision.gameObject.name == "Ouchies" || collision.gameObject.name == "Deadline")
         {
             ResetAtCurrentLevelSpawnPoint();
         }
