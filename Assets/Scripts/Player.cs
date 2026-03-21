@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
     private bool upKey = false;
     private LayerMask ground;
     private Rigidbody2D body;
+    public AudioClip deathSound;
+    public AudioClip walkSound;
 
     public float speed = 5f;
     private bool isGrounded = true;
@@ -26,6 +28,11 @@ public class Player : MonoBehaviour
 
     private bool lockedMovement = false;
 
+    public void death()
+    {
+        GetComponent<AudioSource>().PlayOneShot(deathSound);
+        ResetAtCurrentLevelSpawnPoint();
+    }
 
     public Vector3 GetCurrentLevelSpawnPoint()
     {
@@ -146,7 +153,7 @@ public class Player : MonoBehaviour
         }
         if(collision.gameObject.name == "Ouchies" || collision.gameObject.tag == "Deadline")
         {
-            ResetAtCurrentLevelSpawnPoint();
+            death();
         }
         if(collision.gameObject.tag == "EndLevel")
         {

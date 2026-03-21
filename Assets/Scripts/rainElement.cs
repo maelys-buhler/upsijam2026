@@ -9,7 +9,7 @@ public class rainElement : MonoBehaviour
             Destroy(gameObject);
         }
         if(other.name == "Player"){
-            GameObject.Find("Player").GetComponent<Player>().ResetAtCurrentLevelSpawnPoint();
+            GameObject.Find("Player").GetComponent<Player>().death();
         }
     }
 }
