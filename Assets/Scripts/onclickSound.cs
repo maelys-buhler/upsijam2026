@@ -6,7 +6,7 @@ public class onclickSound : MonoBehaviour, IPointerClickHandler
  
     public GameObject stickPerson;
     public Sprite scaredStickPerson;
-    private Sprite defaultStickPerson;
+    public Sprite defaultStickPerson;
     public AudioClip horn;
     public int jumpStrength = 50000;
     private bool isStickPersonGrounded = true;
@@ -27,7 +27,6 @@ public class onclickSound : MonoBehaviour, IPointerClickHandler
         //}
         if (res) //is grounded?
         {
-            defaultStickPerson = stickPerson.gameObject.GetComponent<SpriteRenderer>().sprite;
             stickPerson.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpStrength);
             stickPerson.gameObject.GetComponent<SpriteRenderer>().sprite = scaredStickPerson;
             hasJumped = true;
