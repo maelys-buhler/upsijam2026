@@ -59,6 +59,11 @@ public class Player : MonoBehaviour
             NextLevel();
             ResetAtCurrentLevelSpawnPoint();
         }
+        if(collision.gameObject.name.StartsWith("Item") && collision.gameObject.name.EndsWith("Arrow"))
+        {
+            collision.gameObject.SetActive(false);
+            GameObject.Find(collision.gameObject.name.Substring(4)).GetComponent<SpriteRenderer>().sprite = collision.gameObject.GetComponent<SpriteRenderer>().sprite;
+        }
     }
 
 }
