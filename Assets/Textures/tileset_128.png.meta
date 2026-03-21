@@ -130,7 +130,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 256
+        y: 512
         width: 128
         height: 128
       alignment: 0
@@ -158,8 +158,8 @@ TextureImporter:
       name: tileset_128_1
       rect:
         serializedVersion: 2
-        x: 128
-        y: 256
+        x: 0
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -184,8 +184,8 @@ TextureImporter:
       name: tileset_128_2
       rect:
         serializedVersion: 2
-        x: 256
-        y: 256
+        x: 128
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -212,8 +212,8 @@ TextureImporter:
       name: tileset_128_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
+        x: 256
+        y: 384
         width: 128
         height: 128
       alignment: 0
@@ -238,8 +238,8 @@ TextureImporter:
       name: tileset_128_4
       rect:
         serializedVersion: 2
-        x: 256
-        y: 128
+        x: 0
+        y: 256
         width: 128
         height: 128
       alignment: 0
@@ -264,8 +264,8 @@ TextureImporter:
       name: tileset_128_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 256
+        y: 256
         width: 128
         height: 128
       alignment: 0
@@ -290,8 +290,8 @@ TextureImporter:
       name: tileset_128_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 0
+        y: 128
         width: 128
         height: 128
       alignment: 0
@@ -316,8 +316,8 @@ TextureImporter:
       name: tileset_128_7
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
+        x: 128
+        y: 128
         width: 128
         height: 128
       alignment: 0
@@ -334,6 +334,28 @@ TextureImporter:
       bones: []
       spriteID: b378e37729a3d6f4a8e69a6994016dd0
       internalID: 1475491310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tileset_128_8
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2348b2f2a775c84baf3ddb6b7a7040c
+      internalID: -1522740721
       vertices: []
       indices: 
       edges: []
@@ -362,6 +384,7 @@ TextureImporter:
       tileset_128_5: 1599450459
       tileset_128_6: 762374695
       tileset_128_7: 1475491310
+      tileset_128_8: -1522740721
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
