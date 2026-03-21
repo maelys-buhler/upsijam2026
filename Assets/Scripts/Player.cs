@@ -7,6 +7,8 @@ public class Player : MonoBehaviour
     private bool leftKey = false;
     private bool rightKey = false;
     private bool upKey = false;
+    public float speed = 10000;
+    public float maxVelocity = 10;
 
     public Vector3 GetCurrentLevelSpawnPoint()
     {
@@ -37,6 +39,30 @@ public class Player : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void FixedUpdate()
+    {
+        LayerMask ground = LayerMask.GetMask("Ground");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        if(moveHorizontal > 0 && !rightKey){moveHorizontal = 0;}
+        else if(moveHorizontal < 0 && !leftKey){moveHorizontal = 0;}
+        else if(moveHorizontal < 0){moveHorizontal = -1;}
+        else if(moveHorizontal > 0){moveHorizontal = 1;}
+        float moveVertical = Input.GetAxis("Vertical");
+        if(moveVertical < 0){moveVertical = 0;}
+        else if(moveVertical > 0 && !upKey){moveVertical = 0;}
+        else if(!(Physics2D.Raycast (transform.position, Vector2.down, 1f, ground)))
+        {
+            moveVertical = 0;
+        }
+        else if(moveVertical > 0){moveVertical = 1;}
+        Rigidbody2D body = GetComponent<Rigidbody2D>();
+        body.AddForce(new Vector2 (moveHorizontal*speed, moveVertical*speed));
+        Debug.Log(body.linearVelocity.magnitude);
+        if(body.linearVelocity.magnitude > maxVelocity){
+            body.linearVelocity = (body.linearVelocity / body.linearVelocity.magnitude) * maxVelocity;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

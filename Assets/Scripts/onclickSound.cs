@@ -17,6 +17,7 @@ public class onclickSound : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick( PointerEventData eventData ) {
         jumpPerson(stickPerson);
         GetComponent<AudioSource>().PlayOneShot(horn);
+        Debug.Log("clicked sound!");
     }
 
     void jumpPerson(GameObject stickPerson){
