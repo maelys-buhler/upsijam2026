@@ -49,11 +49,23 @@ public class Player : MonoBehaviour
         }
         lockedMovement = true;
         StartCoroutine(Sleep(0.5f, ()=>lockedMovement = false));
+        if(currentLevel == 4)
+        {
+
+            ClickableObject clickableObject = GameObject.Find("BtnOver").GetComponent<ClickableObject>();
+            clickableObject.isDragEnabled = false;
+        }
     }
 
     public void NextLevel()
     {
         currentLevel++;
+        if(currentLevel == 4)
+        {
+            this.transform.parent = GameObject.Find("BtnOver").transform;
+            this.transform.localPosition = new Vector2(0, 2);
+            this.GetComponent<Rigidbody2D>().gravityScale = 0;
+        }
     }
 
 
@@ -67,6 +79,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         //TODO REMOVE
+        NextLevel();
+        NextLevel();
         NextLevel();
         NextLevel();
         leftKey = true;
@@ -143,6 +157,15 @@ public class Player : MonoBehaviour
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, 1f) * Mathf.Sign(speedDif);
         // Vector right to prevent affecting up/down velocity (which is alreary handled by jump)
         body.AddForce(movement * Vector2.right);
+
+        if(currentLevel == 4){
+            this.transform.localPosition = new Vector2(0, 2);
+            ClickableObject btn = GameObject.Find("BtnOver").GetComponent<ClickableObject>();
+            if(btn.isDragEnabled == false && !Input.GetMouseButton(0))
+            {
+                btn.isDragEnabled = true;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
