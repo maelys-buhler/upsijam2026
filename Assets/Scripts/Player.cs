@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
         leftKey = true;
         rightKey = true;
         //upKey = true;
-        //---------
+        //---------*/
         ResetAtCurrentLevelSpawnPoint();
     }
 
@@ -130,12 +130,52 @@ public class Player : MonoBehaviour
         if (lockedMovement)
             return;
         float direction = Input.GetAxisRaw("Horizontal");
+        if (direction > 0f && !rightKey) return;
+        if (direction < 0f && !leftKey) return;
         float targetSpeed = direction * speed;
         float speedDif = targetSpeed - body.linearVelocity.x;
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? 8f : 9f;
         float movement = Mathf.Pow(Mathf.Abs(speedDif) * accelRate, 1f) * Mathf.Sign(speedDif);
         // Vector right to prevent affecting up/down velocity (which is alreary handled by jump)
         body.AddForce(movement * Vector2.right);
+    }
+
+
+    private Coroutine flickerCoroutine;
+    private Coroutine flickerCoroutine1;
+    private IEnumerator FlickerButton(GameObject button1, GameObject button2)
+    {
+        Vector3 minScale = Vector3.one * 0.75f;
+        Vector3 maxScale = Vector3.one * 0.85f;
+
+        float speed = 1.5f;
+
+        while (true)
+        {
+            float t = Mathf.PingPong(Time.time * speed, 1f);
+            button1.transform.localScale = Vector3.Lerp(minScale, maxScale, t);
+            if(button2 != null)
+            {
+                button2.transform.localScale = Vector3.Lerp(minScale, maxScale, t);
+            }
+
+            yield return null;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "ResetBtnInfo")
+        {
+            if (flickerCoroutine != null)
+            {
+                StopCoroutine(flickerCoroutine);
+                flickerCoroutine = null;
+
+                GameObject btn = GameObject.Find("BtnReset");
+                btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -164,6 +204,23 @@ public class Player : MonoBehaviour
                 rightKey = true;
             if(name.Contains("Up"))
                 upKey = true;
+        }
+        if (collision.gameObject.name == "ResetBtnInfo")
+        {
+            if (flickerCoroutine == null)
+            {
+                GameObject btn = GameObject.Find("BtnReset");
+                flickerCoroutine = StartCoroutine(FlickerButton(btn, null));
+            }
+        }
+        if(collision.gameObject.name == "JmpBtnInfo")
+        {
+            if (flickerCoroutine1 == null)
+            {
+                GameObject btn1 = GameObject.Find("UpArrow");
+                GameObject btn2 = GameObject.Find("SoundButton");
+                flickerCoroutine = StartCoroutine(FlickerButton(btn1, btn2));
+            }
         }
     }
 

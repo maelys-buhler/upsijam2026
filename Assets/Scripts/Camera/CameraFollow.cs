@@ -34,6 +34,16 @@ public class CameraFollow : MonoBehaviour
         );
     }
 
+    public void setSpeed(float normalSpeed)
+    {
+        this.normalTime = normalSpeed;
+    }
+
+    public void resetSpeed()
+    {
+        this.normalTime = 0.5f;
+    }
+
     public void setDragging(bool isDragging)
     {
         this.isDragging = isDragging;
