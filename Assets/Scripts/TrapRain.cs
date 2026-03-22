@@ -8,6 +8,9 @@ public class TrapRain : MonoBehaviour
     public float rainSpeed; 
     public float width = 5;
     public float depth = 10;
+    public bool isHurtful = true;
+    public int maxItem = 10;
+    private int itemCounter = 0;
     int layer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private bool isActive = false;
@@ -15,13 +18,14 @@ public class TrapRain : MonoBehaviour
     {
         layer = LayerMask.NameToLayer("Rain");
         chrono = 0f;
-        GameObject endOfRain = new GameObject("endOfRain");
-        endOfRain.AddComponent<BoxCollider2D>();
-        endOfRain.GetComponent<BoxCollider2D>().name = "endOfRain";
-        endOfRain.transform.position = new Vector2(this.transform.position.x, this.transform.position.y - depth);
-        endOfRain.GetComponent<BoxCollider2D>().size = new Vector2(width, 2f);
-        endOfRain.layer = layer;
-
+        if(isHurtful){
+            GameObject endOfRain = new GameObject("endOfRain");
+            endOfRain.AddComponent<BoxCollider2D>();
+            endOfRain.GetComponent<BoxCollider2D>().name = "endOfRain";
+            endOfRain.transform.position = new Vector2(this.transform.position.x, this.transform.position.y - depth);
+            endOfRain.GetComponent<BoxCollider2D>().size = new Vector2(width, 2f);
+            endOfRain.layer = layer;
+        }
     }
 
     // Update is called once per frame
@@ -34,7 +38,7 @@ public class TrapRain : MonoBehaviour
         chrono += Time.deltaTime;
         if(chrono >= intervalBetweenObjectAppearance){
             chrono = 0f;
-            makeRainAppear();
+            if(itemCounter < maxItem) makeRainAppear();
         }
     }
 
@@ -54,8 +58,14 @@ public class TrapRain : MonoBehaviour
         newElement.AddComponent<BoxCollider2D>();
         newElement.GetComponent<BoxCollider2D>().offset = new Vector2(0f, 0.5f);
         newElement.GetComponent<BoxCollider2D>().size = new Vector2(1f, 1.3f);
-        newElement.layer = layer;
-        newElement.GetComponent<BoxCollider2D>().isTrigger = true;
-        newElement.AddComponent<rainElement>();
+
+        if(isHurtful){
+            newElement.GetComponent<BoxCollider2D>().isTrigger = true;
+            newElement.layer = layer;
+            newElement.AddComponent<rainElement>();
+        }  
+        else{
+            itemCounter++;
+        }
     }
 }
