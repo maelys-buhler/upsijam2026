@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 
 public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IDragHandler, IPointerUpHandler
@@ -62,9 +62,38 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDown
         mainCamera.setDragging(false);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private IEnumerator PlaceButton()
     {
+        GameObject victory = GameObject.Find("BtnOver");
+        victory.transform.position = new Vector3(victory.transform.position.x, victory.transform.position.y, -2);
+        GameObject placeholder = GameObject.Find("victory_placeholder_0");
 
+        Vector3 startPos = victory.transform.position;
+        Vector3 targetPos = placeholder.transform.position;
+
+        float duration = 1f; // temps du déplacement
+        float time = 0f;
+
+        while (time < duration)
+        {
+            float t = time / duration;
+            victory.transform.position = Vector3.Lerp(startPos, targetPos, t);
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        victory.transform.position = targetPos;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.name == "endscreen_0" && this.gameObject.name == "BtnOver")
+        {
+            isDragEnabled = false;
+            isClickEnabled = false;
+            StartCoroutine(PlaceButton());
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -75,11 +104,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDown
             player.linearVelocity/=2;
             player.linearVelocity = new Vector2(Mathf.Clamp(player.linearVelocityX, -5.0f, 5.0f), Mathf.Clamp(player.linearVelocityY, -5.0f, 5.0f));
         }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-
     }
 
     void Awake()

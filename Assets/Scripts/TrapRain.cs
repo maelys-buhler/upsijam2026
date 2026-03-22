@@ -47,7 +47,8 @@ public class TrapRain : MonoBehaviour
         newElement.AddComponent<Rigidbody2D>();
         newElement.AddComponent<SpriteRenderer>();
         newElement.GetComponent<SpriteRenderer>().sprite = sprite;
-        newElement.GetComponent<Rigidbody2D>().gravityScale = 0.09f;
+        newElement.GetComponent<Rigidbody2D>().gravityScale = 0f;
+        newElement.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, -rainSpeed));
         newElement.GetComponent<Rigidbody2D>().sleepMode = RigidbodySleepMode2D.NeverSleep;
         newElement.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.Interpolate;
         newElement.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
