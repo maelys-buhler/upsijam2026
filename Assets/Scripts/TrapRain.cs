@@ -5,7 +5,7 @@ public class TrapRain : MonoBehaviour
     private float chrono;
     public float intervalBetweenObjectAppearance;
     public Sprite sprite;
-    public int rainSpeed; 
+    public float rainSpeed; 
     public float width = 5;
     public float depth = 10;
     int layer;
@@ -47,9 +47,13 @@ public class TrapRain : MonoBehaviour
         newElement.AddComponent<Rigidbody2D>();
         newElement.AddComponent<SpriteRenderer>();
         newElement.GetComponent<SpriteRenderer>().sprite = sprite;
-        newElement.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -rainSpeed));
+        newElement.GetComponent<Rigidbody2D>().gravityScale = 0.09f;
+        newElement.GetComponent<Rigidbody2D>().sleepMode = RigidbodySleepMode2D.NeverSleep;
+        newElement.GetComponent<Rigidbody2D>().interpolation = RigidbodyInterpolation2D.Interpolate;
+        newElement.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         newElement.AddComponent<BoxCollider2D>();
-        newElement.GetComponent<BoxCollider2D>().size = new Vector2(1.3f, 1.5f);
+        newElement.GetComponent<BoxCollider2D>().offset = new Vector2(0f, 0.5f);
+        newElement.GetComponent<BoxCollider2D>().size = new Vector2(1f, 1.3f);
         newElement.layer = layer;
         newElement.GetComponent<BoxCollider2D>().isTrigger = true;
         newElement.AddComponent<rainElement>();

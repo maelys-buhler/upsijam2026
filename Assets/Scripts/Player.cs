@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
         if(currentLevel == 4)
         {
             this.transform.parent = GameObject.Find("BtnOver").transform;
-            this.transform.localPosition = new Vector2(0, 2);
+            this.transform.localPosition = new Vector2(0, 1.5f);
             this.GetComponent<Rigidbody2D>().gravityScale = 0;
         }
     }
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
         NextLevel();
         leftKey = true;
         rightKey = true;
-        //upKey = true;
+        upKey = true;
         //---------*/
         ResetAtCurrentLevelSpawnPoint();
     }
@@ -161,7 +161,7 @@ public class Player : MonoBehaviour
         body.AddForce(movement * Vector2.right);
 
         if(currentLevel == 4){
-            this.transform.localPosition = new Vector2(0, 2);
+            this.transform.localPosition = new Vector2(0, 1.5f);
             ClickableObject btn = GameObject.Find("BtnOver").GetComponent<ClickableObject>();
             if(btn.isDragEnabled == false && !Input.GetMouseButton(0))
             {
