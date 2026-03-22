@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         if(currentLevel == 3)
         {
             this.transform.parent = GameObject.Find("BtnOver").transform;
-            this.transform.localPosition = new Vector2(0, 1.5f);
+            this.transform.localPosition = new Vector2(0, 1.3f);
             this.GetComponent<Rigidbody2D>().gravityScale = 0;
         }
     }
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
         {
             this.jumpClicked = true;
             transform.GetComponent<SpriteRenderer>().sprite = scaredStickPerson;
-            GetComponent<AudioSource>().PlayOneShot(horn);
+            GetComponent<AudioSource>().PlayOneShot(horn, 0.3f);
         }
     }
 
@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
         body.AddForce(movement * Vector2.right);
 
         if(currentLevel == 3){
-            this.transform.localPosition = new Vector2(0, 1.5f);
+            this.transform.localPosition = new Vector2(0, 1.3f);
             ClickableObject btn = GameObject.Find("BtnOver").GetComponent<ClickableObject>();
             if(btn.isDragEnabled == false && !Input.GetMouseButton(0))
             {
@@ -194,6 +194,19 @@ public class Player : MonoBehaviour
 
                 GameObject btn = GameObject.Find("BtnReset");
                 btn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            }
+        }
+        if (collision.gameObject.name == "JmpBtnInfo")
+        {
+            if (flickerCoroutine1 != null)
+            {
+                StopCoroutine(flickerCoroutine1);
+                flickerCoroutine1 = null;
+
+                GameObject btn1 = GameObject.Find("UpArrow");
+                GameObject btn2 = GameObject.Find("SoundButton");
+                btn1.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                btn2.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
             }
         }
     }
@@ -239,7 +252,7 @@ public class Player : MonoBehaviour
             {
                 GameObject btn1 = GameObject.Find("UpArrow");
                 GameObject btn2 = GameObject.Find("SoundButton");
-                flickerCoroutine = StartCoroutine(FlickerButton(btn1, btn2));
+                flickerCoroutine1 = StartCoroutine(FlickerButton(btn1, btn2));
             }
         }
     }
