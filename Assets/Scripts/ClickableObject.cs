@@ -93,6 +93,7 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler, IPointerDown
             isDragEnabled = false;
             isClickEnabled = false;
             StartCoroutine(PlaceButton());
+            GameObject.Find("VictoryRain").GetComponent<TrapRain>().isActive = true;
         }
     }
 

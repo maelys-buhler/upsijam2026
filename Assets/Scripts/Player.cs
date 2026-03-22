@@ -49,9 +49,8 @@ public class Player : MonoBehaviour
         }
         lockedMovement = true;
         StartCoroutine(Sleep(0.5f, ()=>lockedMovement = false));
-        if(currentLevel == 4)
+        if(currentLevel == 3)
         {
-
             ClickableObject clickableObject = GameObject.Find("BtnOver").GetComponent<ClickableObject>();
             clickableObject.isDragEnabled = false;
         }
@@ -60,7 +59,7 @@ public class Player : MonoBehaviour
     public void NextLevel()
     {
         currentLevel++;
-        if(currentLevel == 4)
+        if(currentLevel == 3)
         {
             this.transform.parent = GameObject.Find("BtnOver").transform;
             this.transform.localPosition = new Vector2(0, 1.5f);
@@ -78,15 +77,6 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //TODO REMOVE
-        NextLevel();
-        NextLevel();
-        NextLevel();
-        NextLevel();
-        leftKey = true;
-        rightKey = true;
-        upKey = true;
-        //---------*/
         ResetAtCurrentLevelSpawnPoint();
     }
 
@@ -160,7 +150,7 @@ public class Player : MonoBehaviour
         // Vector right to prevent affecting up/down velocity (which is alreary handled by jump)
         body.AddForce(movement * Vector2.right);
 
-        if(currentLevel == 4){
+        if(currentLevel == 3){
             this.transform.localPosition = new Vector2(0, 1.5f);
             ClickableObject btn = GameObject.Find("BtnOver").GetComponent<ClickableObject>();
             if(btn.isDragEnabled == false && !Input.GetMouseButton(0))

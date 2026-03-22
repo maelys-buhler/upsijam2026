@@ -13,7 +13,7 @@ public class TrapRain : MonoBehaviour
     private int itemCounter = 0;
     int layer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private bool isActive = false;
+    [SerializeField] public bool isActive = false;
     void Start()
     {
         layer = LayerMask.NameToLayer("Rain");
